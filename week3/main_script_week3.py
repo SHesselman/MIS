@@ -37,10 +37,11 @@ week3.plot_2d_data(x, None, None, means)
 dist = np.zeros([K, x.shape[0]])
 for i in np.arange(0, K):
     for j in np.arange(0, x.shape[0]):
-        # dist[i, j] = ... # COMPUT EUCLIDEAN DISTANCE
+        dist[i, j] = np.linalg.norm(x-K)
+        print dist[i, j]
 
 # PART 1. STEP 2. FIND WHAT IS THE CLOSEST CENTER PER POINT
-closest = np.argmin(...
+closest = np.argmin()
 week3.plot_2d_data(x, None, closest, means)
 
 # PART 1. STEP 3. UPDATE CENTERS
