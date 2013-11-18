@@ -15,18 +15,18 @@ import pickle
 
 def mykmeans(x, K):
     max_iter = 20
-    
+
     # PART 1. STEP 0. PICK RANDOM CENTERS
-    
+
     for it in max_iter:
         # STEP 1. CALCULATE DISTANCE FROM DATA TO CENTERS
         # STEP 2. FIND WHAT IS THE CLOSEST CENTER PER POINT
         # STEP 3. UPDATE CENTERS
         # STEP 3. INCLUDE PERHAPS TERMINATION CRITERIA ????
-    
+
     # ...
-    return codebook
-    
+        return codebook
+
 
 ##############################################################################
 ### ALREADY IMPLEMENTED, DO NOT TOUCH
