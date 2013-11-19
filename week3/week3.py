@@ -27,7 +27,15 @@ def mykmeans(x, K):
                 print dist[i, j]
 
         # STEP 2. FIND WHAT IS THE CLOSEST CENTER PER POINT
+        closest = np.argmin(dist, axis=0)
+        week3.plot_2d_data(x, None, closest, means)
+        print closest
         # STEP 3. UPDATE CENTERS
+        for i in np.arange(0, K):
+            # means[i, :] = ...
+            means[i, :] = (sum(x[i, 0]) / len(x[i]), sum(x[i, 1]) / len(x[i]))
+            print means[i, :]
+            week3.plot_2d_data(x, None, closest, means)
         # STEP 3. INCLUDE PERHAPS TERMINATION CRITERIA ????
 
     # ...
