@@ -19,13 +19,19 @@ def mykmeans(x, K):
     # PART 1. STEP 0. PICK RANDOM CENTERS
 
     for it in max_iter:
-        # STEP 1. CALCULATE DISTANCE FROM DATA TO CENTERS
+        dist = []
+        dist = np.zeros([K, x.shape[0]])
+        for i in np.arange(0, K):
+            for j in np.arange(0, x.shape[0]):
+                dist[i, j] = np.linalg.norm(means[i] - x[j])
+                print dist[i, j]
+
         # STEP 2. FIND WHAT IS THE CLOSEST CENTER PER POINT
         # STEP 3. UPDATE CENTERS
         # STEP 3. INCLUDE PERHAPS TERMINATION CRITERIA ????
 
     # ...
-        return codebook
+    return codebook
 
 
 ##############################################################################

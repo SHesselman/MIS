@@ -34,20 +34,23 @@ means = np.array(random.sample(x, K))
 week3.plot_2d_data(x, None, None, means)
 
 # PART 1. STEP 1. CALCULATE DISTANCE FROM DATA TO CENTERS
+dist = []
 dist = np.zeros([K, x.shape[0]])
 for i in np.arange(0, K):
     for j in np.arange(0, x.shape[0]):
-        dist[i, j] = np.linalg.norm(x-K)
+        dist[i, j] = np.linalg.norm(means[i] - x[j])
         print dist[i, j]
 
 # PART 1. STEP 2. FIND WHAT IS THE CLOSEST CENTER PER POINT
-closest = np.argmin()
+closest = np.argmin(dist, axis=0)
 week3.plot_2d_data(x, None, closest, means)
+print closest
 
 # PART 1. STEP 3. UPDATE CENTERS
 for i in np.arange(0, K):
-    # means[i, :] = ...
-    
+    means[i, :] = (sum(x[i]) / len(x[j]), sum(x[i]) / len(x[j]))
+    print means[i, :]
+
 week3.plot_2d_data(x, None, closest, means)
 
 ###~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
