@@ -50,11 +50,11 @@ print closest
 # for i in np.arange(0, K):
     # means[i, :] = (sum(closest[i]) / len(x[j]), sum(closest[i]) / len(x[j]))
     # print means[i, :]
-mean_x = 0.0
-mean_y = 0.0
-count = 0
 
 for i in np.arange(0, K):
+    mean_x = 0.0
+    mean_y = 0.0
+    count = 0
     for j in np.arange(0, x.shape[0]):
         if closest[j] == i:
             count += 1
