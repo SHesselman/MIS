@@ -128,10 +128,19 @@ matplotlib.pyplot.bar(range(0, len(bow)), bow, 0.8, None, None)
 # PART 5. PERFORM RETRIEVAL WITH THE BAG-OF-WORDS MODEL
 
 # PART 5. STEP 1. LOAD BAG-OF-WORDS VECTORS FROM ../../data/bow/codebook_100/ using the week3.load_bow function
-f = 'all_souls_000026.jpg'
-bow = week3.load_bow('../../data/bow/codebook_100/' + f + '.pkl')
+files = os.listdir('../../data/oxford_scaled/')
+directory = [] 
+for f in files:
+    directory.append('../../data/oxford_scaled/' + f)
+print directory
 
 # PART 5. STEP 2. COMPUTE DISTANCE MATRIX
+dist = []
+dist = np.zeros([len(files), len(files)]) # TODO: Define zero point
+for i in np.arange(0, files):
+    for j in np.arange(0, files):
+        dist[i, j] = np.linalg.norm(directory[i] - directory[j])
+print dist[i, j]
 
 # PART 5. STEP 3. PERFORM RANKING SIMILAR TO WEEK 1 & 2 WITH QUERIES 'all_souls_000065.jpg', 'all_souls_0000XX.jpg', 'all_souls_0000XX.jpg'
 query_id = ...
