@@ -56,6 +56,8 @@ for i in np.arange(0, K):
 
 week3.plot_2d_data(x, None, closest, means)
 
+# means = week3.mykmeans(x, K) # return new means TODO: Recall to function.
+
 ###~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # PART 2. COLOR BASED IMAGE SEGMENTATION
 
