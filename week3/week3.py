@@ -5,6 +5,7 @@ import platform
 from PIL import Image
 from pylab import *
 import os
+import random
 from matplotlib import cm
 import matplotlib.colors as cols
 import pickle
@@ -30,8 +31,9 @@ def mykmeans(x, K):
 
         # STEP 2. FIND WHAT IS THE CLOSEST CENTER PER POINT
         closest = np.argmin(dist, axis=0)
-        week3.plot_2d_data(x, None, closest, means)
+        week3.plot_2d_data(x, None, closest, codebook)
         print closest
+
         # STEP 3. UPDATE CENTERS
         for i in np.arange(0, K):
             mean_x = 0.0
@@ -42,8 +44,8 @@ def mykmeans(x, K):
                     count += 1
                     mean_x += x[j,0]
                     mean_y += x[j,1]
-                    means[i, 0] = mean_x / count
-                    means[i, 1] = mean_y / count
+                    codebook[i, 0] = mean_x / count
+                    codebook[i, 1] = mean_y / count
 
         # STEP 3. INCLUDE PERHAPS TERMINATION CRITERIA ????
 
