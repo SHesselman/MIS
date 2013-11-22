@@ -120,6 +120,8 @@ for i in range(WN):
 
 # PART 4. BAG-OF-WORDS IMAGE REPRESENTATION
 # USE THE np.bincount COUNTING THE INDEXES TO COMPUTE THE BAG-OF-WORDS REPRESENTATION,
+bow = np.bincount(indexes, None, 256)
+matplotlib.pyplot.bar(range(0, len(bow)), bow, 0.8, None, None)
 
 ###~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # PART 5. PERFORM RETRIEVAL WITH THE BAG-OF-WORDS MODEL
