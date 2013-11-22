@@ -56,7 +56,7 @@ for i in np.arange(0, K):
 
 week3.plot_2d_data(x, None, closest, means)
 
-# means = week3.mykmeans(x, K) # return new means TODO: Recall to function.
+# means = week3.mykmeans(x, K, codebook) # return new means TODO: Recall to function.
 
 ###~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # PART 2. COLOR BASED IMAGE SEGMENTATION
@@ -102,7 +102,7 @@ impath = '../../data/oxford_scaled/' + f
 frames, sift = compute_sift(impath, edge_thresh = 10, peak_thresh = 5) # COMPUTE SIFT
 [indexes, dummy] = cluster.vq(sift ,codebook)                          # VECTOR QUANTIZE SIFT TO WORDS
 
-word_patches = week3.show_words_on_image(...    # VISUALIZE WORDS
+word_patches = week3.show_words_on_image() # VISUALIZE WORDS
     
 # PART 3. STEP 2. PLOT COLORBAR
 week3.get_colorbar(colors)

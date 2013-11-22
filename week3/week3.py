@@ -16,10 +16,11 @@ import tools
 ## YOUR IMPLEMENTATIONS
 ##############################################################################
 
-def mykmeans(x, K):
+def mykmeans(x, K, codebook):
     max_iter = 20
 
     # PART 1. STEP 0. PICK RANDOM CENTERS
+    # codebook = np.array(random.sample(x, K))
 
     for it in max_iter:
         dist = []
@@ -31,7 +32,7 @@ def mykmeans(x, K):
 
         # STEP 2. FIND WHAT IS THE CLOSEST CENTER PER POINT
         closest = np.argmin(dist, axis=0)
-        week3.plot_2d_data(x, None, closest, codebook)
+        week3.plot_2d_data(x, None, closest, means)
         print closest
 
         # STEP 3. UPDATE CENTERS
@@ -44,8 +45,8 @@ def mykmeans(x, K):
                     count += 1
                     mean_x += x[j,0]
                     mean_y += x[j,1]
-                    codebook[i, 0] = mean_x / count
-                    codebook[i, 1] = mean_y / count
+                    means[i, 0] = mean_x / count
+                    means[i, 1] = mean_y / count
 
         # STEP 3. INCLUDE PERHAPS TERMINATION CRITERIA ????
 
