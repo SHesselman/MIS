@@ -56,6 +56,7 @@ for i in np.arange(0, K):
 
 week3.plot_2d_data(x, None, closest, means)
 
+# throw random points and recalculate the center.
 # means = week3.mykmeans(x, K, codebook) # return new means TODO: Recall to function.
 
 ###~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -99,7 +100,7 @@ files_random = random.sample(files, 5)
 
 f = 'all_souls_000057.jpg'
 impath = '../../data/oxford_scaled/' + f
-frames, sift = compute_sift(impath, edge_thresh = 10, peak_thresh = 5) # COMPUTE SIFT
+frames, sift = week3.compute_sift(impath, edge_thresh = 10, peak_thresh = 5) # COMPUTE SIFT
 [indexes, dummy] = cluster.vq(sift ,codebook)                          # VECTOR QUANTIZE SIFT TO WORDS
 
 word_patches = week3.show_words_on_image() # VISUALIZE WORDS
