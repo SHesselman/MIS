@@ -52,16 +52,7 @@ print closest
     # print means[i, :]
 
 for i in np.arange(0, K):
-    mean_x = 0.0
-    mean_y = 0.0
-    count = 0
-    for j in np.arange(0, x.shape[0]):
-        if closest[j] == i:
-            count += 1
-            mean_x += x[j,0]
-            mean_y += x[j,1]
-            means[i, 0] = mean_x / count
-            means[i, 1] = mean_y / count
+    means[i, :] = np.mean(x[closest == i, :],0)
 
 week3.plot_2d_data(x, None, closest, means)
 
@@ -106,8 +97,8 @@ files_random = random.sample(files, 5)
 
 f = 'all_souls_000057.jpg'
 impath = '../../data/oxford_scaled/' + f
-frames, sift = ...                              # COMPUTE SIFT
-[indexes, dummy] = ...                          # VECTOR QUANTIZE SIFT TO WORDS
+frames, sift = compute_sift(impath, edge_thresh = 10, peak_thresh = 5) # COMPUTE SIFT
+[indexes, dummy] = ...                                                 # VECTOR QUANTIZE SIFT TO WORDS
 
 word_patches = week3.show_words_on_image(...    # VISUALIZE WORDS
     
