@@ -77,8 +77,8 @@ N = 10000
 im_flat_random = np.array(random.sample(im_flat, N))
 
 K = 10
-[codebook, dummy] = cluster.kmeans(... # RUN SCIPY KMEANS
-[indexes, dummy] = cluster.vq(...      # VECTOR QUANTIZE PIXELS TO COLOR CENTERS
+[codebook, dummy] = cluster.kmeans(im_flat, K) # RUN SCIPY KMEANS
+[indexes, dummy] = cluster.vq(im_flat, codebook) # VECTOR QUANTIZE PIXELS TO COLOR CENTERS
 
 im_vq = codebook[indexes]
 im_vq = np.reshape(im_vq, (im.shape))
