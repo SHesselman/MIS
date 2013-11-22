@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # PRE A : GO TO MAIN DIR FOR WEEK2, THAT IS WHERE MAIN_SCRIPT_WEEK2.PY IS
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -101,7 +102,7 @@ files_random = random.sample(files, 5)
 f = 'all_souls_000057.jpg'
 impath = '../../data/oxford_scaled/' + f
 frames, sift = week3.compute_sift(impath, edge_thresh = 10, peak_thresh = 5) # COMPUTE SIFT
-[indexes, dummy] = cluster.vq(sift ,codebook)                          # VECTOR QUANTIZE SIFT TO WORDS
+[indexes, dummy] = cluster.vq(sift ,codebook)                                # VECTOR QUANTIZE SIFT TO WORDS
 
 word_patches = week3.show_words_on_image(impath, K, frames, sift, indexes, colors, word_patches) # VISUALIZE WORDS
     
@@ -127,6 +128,8 @@ matplotlib.pyplot.bar(range(0, len(bow)), bow, 0.8, None, None)
 # PART 5. PERFORM RETRIEVAL WITH THE BAG-OF-WORDS MODEL
 
 # PART 5. STEP 1. LOAD BAG-OF-WORDS VECTORS FROM ../../data/bow/codebook_100/ using the week3.load_bow function
+f = 'all_souls_000026.jpg'
+bow = week3.load_bow('../../data/bow/codebook_100/' + f + '.pkl')
 
 # PART 5. STEP 2. COMPUTE DISTANCE MATRIX
 
