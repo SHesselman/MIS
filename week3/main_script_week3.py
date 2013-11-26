@@ -142,7 +142,7 @@ for i in np.arange(0, len(files)):
 print dist[i, j]
 
 # PART 5. STEP 3. PERFORM RANKING SIMILAR TO WEEK 1 & 2 WITH QUERIES 'all_souls_000065.jpg', 'all_souls_0000XX.jpg', 'all_souls_0000XX.jpg'
-query_id = randint(0, 60)
+query_id = randint(0, len(files))
 ranking = np.argsort(dist[query_id])
 print ranking
 
