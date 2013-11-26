@@ -36,6 +36,7 @@ def mykmeans(x, K, codebook):
         print closest
 
         # STEP 3. UPDATE CENTERS
+        # means[i, :] = np.mean(x[closest == i, :],0)
         for i in np.arange(0, K):
             mean_x = 0.0
             mean_y = 0.0
@@ -150,7 +151,8 @@ def show_words_on_image(impath, K, frames, sift, indexes, colors, word_patches):
         plot(frames[ix, 0], frames[ix, 1], marker='o', markeredgecolor=colors[k, :], markerfacecolor=colors[k, :], markersize=4, linewidth=0.0)
         
         indexes_range = [i for i,x in enumerate(indexes) if x == k]
-        indexes_range = indexes_range[0 : max(len(indexes_range, 10))]
+        # indexes_range = indexes_range[0 : max(len(indexes_range, 10))]
+        indexes_range = indexes_range[0 : min(len(indexes_range, 10))]
         
         for i in indexes_range:
             r = frames[i, 1]

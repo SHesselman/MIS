@@ -129,22 +129,23 @@ matplotlib.pyplot.bar(range(0, len(bow)), bow, 0.8, None, None)
 
 # PART 5. STEP 1. LOAD BAG-OF-WORDS VECTORS FROM ../../data/bow/codebook_100/ using the week3.load_bow function
 files = os.listdir('../../data/oxford_scaled/')
-directory = [] 
+bows = []
 for f in files:
-    directory.append('../../data/oxford_scaled/' + f)
-print directory
+    bows.append('../../data/oxford_scaled/' + f)
 
 # PART 5. STEP 2. COMPUTE DISTANCE MATRIX
 dist = []
-dist = np.zeros([len(files), len(files)]) # TODO: Define zero point
-for i in np.arange(0, files):
-    for j in np.arange(0, files):
-        dist[i, j] = np.linalg.norm(directory[i] - directory[j])
+dist = np.zeros(len(files)**2).reshape((len(files),len(files))) # TODO: Define zero point
+for i in np.arange(0, len(files)):
+    for j in np.arange(0, len(files)):
+        dist[i, j] = sum((bows[i][k] - bows[j][k])**2) for k in range(len(bows[i])))
+        # dist[i, j] = np.linalg.norm(directory[i] - directory[j])
 print dist[i, j]
 
 # PART 5. STEP 3. PERFORM RANKING SIMILAR TO WEEK 1 & 2 WITH QUERIES 'all_souls_000065.jpg', 'all_souls_0000XX.jpg', 'all_souls_0000XX.jpg'
-query_id = ...
-ranking = ...
+query_id = randint(0, 60)
+ranking = np.argsort(dist[query_id])
+print ranking
 
 # PART 5. STEP 4. COMPUTE THE PRECISION@5
 files, labels, label_names = week3.get_oxford_filedata()
@@ -152,7 +153,3 @@ files, labels, label_names = week3.get_oxford_filedata()
 prec5 = week3.precision_at_N(0, gt_labels, ranking, 5)
 
 # PART 5. STEP 4. IMPLEMENT & COMPUTE AVERAGE PRECISION
-
-
-
-
