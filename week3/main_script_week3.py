@@ -148,7 +148,7 @@ for i in np.arange(0, len(files)):
         elif dist_type == 'hellinger':
             dist[i,j] = sum((np.sqrt((bows[i][k]*bows[j][k]))) for k in range(len(bows[i])))
 
-tools.normalizeL2(dist, 1)
+tools.normalizeL2(dist, 0)
 print dist[i,j]
 
 # PART 5. STEP 3. PERFORM RANKING SIMILAR TO WEEK 1 & 2 WITH QUERIES 'all_souls_000065.jpg', 'all_souls_0000XX.jpg', 'all_souls_0000XX.jpg'
