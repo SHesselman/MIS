@@ -135,19 +135,20 @@ for f in files:
 
 # PART 5. STEP 2. COMPUTE DISTANCE MATRIX
 dist = []
-dist_type = 'chi2'
+dist_type = 'euclidean'
 dist = np.zeros(len(files)**2).reshape((len(files),len(files))) # TODO: Define zero point
 for i in np.arange(0, len(files)):
     for j in np.arange(0, len(files)):
         if dist_type == 'euclidean':
-            dist[i][j] = sum((((bows[i][k] - bows[j][k])**2) for k in range(len(bows[i]))))
+            dist[i,j] = sum((((bows[i][k] - bows[j][k])**2) for k in range(len(bows[i]))))
         elif dist_type == 'intersect':
-            dist[i][j] = sum(np.minimum(bows[i][k],bows[j][k]**2) for k in range(len(bows[i])))
+            dist[i,j] = sum(np.minimum(bows[i][k],bows[j][k]**2) for k in range(len(bows[i])))
         elif dist_type == 'chi2':
-            dist[i][j] = sum((((bows[i][k] - bows[j][k]) **2) / (bows[i][k]+bows[j][k])) for k in range(len(bows[i])))
+            dist[i,j] = sum((((bows[i][k] - bows[j][k]) **2) / (bows[i][k]+bows[j][k])) for k in range(len(bows[i])))
         elif dist_type == 'hellinger':
-            dist[i][j] = sum((np.sqrt((bows[i][k]*bows[j][k]))) for k in range(len(bows[i])))
+            dist[i,j] = sum((np.sqrt((bows[i][k]*bows[j][k]))) for k in range(len(bows[i])))
 
+tools.normalizeL2(dist, 1)
 print dist[i,j]
 
 # PART 5. STEP 3. PERFORM RANKING SIMILAR TO WEEK 1 & 2 WITH QUERIES 'all_souls_000065.jpg', 'all_souls_0000XX.jpg', 'all_souls_0000XX.jpg'
