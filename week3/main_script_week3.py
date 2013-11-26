@@ -135,20 +135,35 @@ for f in files:
 
 # PART 5. STEP 2. COMPUTE DISTANCE MATRIX
 dist = []
+dist_type = 'chi2'
 dist = np.zeros(len(files)**2).reshape((len(files),len(files))) # TODO: Define zero point
 for i in np.arange(0, len(files)):
     for j in np.arange(0, len(files)):
-        dist[i, j] = sum((bows[i][k] - bows[j][k]**2) for k in range(len(bows[i])))
-print dist[i, j]
+        if dist_type == 'euclidean':
+            dist[i][j] = sum((((bows[i][k] - bows[j][k])**2) for k in range(len(bows[i]))))
+        elif dist_type == 'intersect':
+            dist[i][j] = sum(np.minimum(bows[i][k],bows[j][k]**2) for k in range(len(bows[i])))
+        elif dist_type == 'chi2':
+            dist[i][j] = sum((((bows[i][k] - bows[j][k]) **2) / (bows[i][k]+bows[j][k])) for k in range(len(bows[i])))
+        elif dist_type == 'hellinger':
+            dist[i][j] = sum((np.sqrt((bows[i][k]*bows[j][k]))) for k in range(len(bows[i])))
+
+print dist[i,j]
 
 # PART 5. STEP 3. PERFORM RANKING SIMILAR TO WEEK 1 & 2 WITH QUERIES 'all_souls_000065.jpg', 'all_souls_0000XX.jpg', 'all_souls_0000XX.jpg'
 query_id = randint(0, len(files))
 ranking = np.argsort(dist[query_id])
+
+if dist_type == 'euclidean' or dist_type == 'intersect':
+    ranking = np.argsort(dist[query_id])
+elif dist_type == 'chi2' or dist_type == 'hellinger':
+    ranking = np.argsort(dist[query_id])[::-1]
 print ranking
 
 # PART 5. STEP 4. COMPUTE THE PRECISION@5
 files, labels, label_names = week3.get_oxford_filedata()
 # ...
-prec5 = week3.precision_at_N(0, gt_labels, ranking, 5)
+prec5 = week3.precision_at_N(0, labels, ranking, 5)
+print prec5
 
 # PART 5. STEP 4. IMPLEMENT & COMPUTE AVERAGE PRECISION
