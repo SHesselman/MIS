@@ -101,10 +101,10 @@ files_random = random.sample(files, 5)
 
 f = 'all_souls_000057.jpg'
 impath = '../../data/oxford_scaled/' + f
-frames, sift = week3.compute_sift(impath, edge_thresh = 10, peak_thresh = 5) # COMPUTE SIFT
-[indexes, dummy] = cluster.vq(sift ,codebook)                                # VECTOR QUANTIZE SIFT TO WORDS
+frames, sift = week3.compute_sift(impath, edge_thresh = 10, peak_thresh = 5)
+[indexes, dummy] = cluster.vq(sift ,codebook)
 
-word_patches = week3.show_words_on_image(impath, K, frames, sift, indexes, colors, word_patches) # VISUALIZE WORDS
+word_patches = week3.show_words_on_image(impath, K, frames, sift, indexes, colors, word_patches) # ERROR: Only one color visualized
     
 # PART 3. STEP 2. PLOT COLORBAR
 week3.get_colorbar(colors)
@@ -130,17 +130,18 @@ matplotlib.pyplot.bar(range(0, len(bow)), bow, 0.8, None, None)
 # PART 5. STEP 1. LOAD BAG-OF-WORDS VECTORS FROM ../../data/bow/codebook_100/ using the week3.load_bow function
 files = os.listdir('../../data/bow/codebook_100/')
 bows = []
-for f in files:
-    bows.append(week3.load_bow('../../data/bow/codebook_100/' + f))
+for f in range(len(files)):
+    bows.append(week3.load_bow('../../data/bow/codebook_100/' + files[f]))
+    tools.normalizeL2(bows[f]) # ERROR!
 
 # PART 5. STEP 2. COMPUTE DISTANCE MATRIX
 dist = []
-dist_type = 'euclidean'
+dist_type = 'intersect'
 dist = np.zeros(len(files)**2).reshape((len(files),len(files))) # TODO: Define zero point
 for i in np.arange(0, len(files)):
     for j in np.arange(0, len(files)):
         if dist_type == 'euclidean':
-            dist[i,j] = sum((((bows[i][k] - bows[j][k])**2) for k in range(len(bows[i]))))
+            dist[i,j] = sum((((bows[i][k] - bows[j][k])**2) for k in range(len(bows[i])))) # ERROR: Minus number.
         elif dist_type == 'intersect':
             dist[i,j] = sum(np.minimum(bows[i][k],bows[j][k]**2) for k in range(len(bows[i])))
         elif dist_type == 'chi2':
@@ -148,7 +149,6 @@ for i in np.arange(0, len(files)):
         elif dist_type == 'hellinger':
             dist[i,j] = sum((np.sqrt((bows[i][k]*bows[j][k]))) for k in range(len(bows[i])))
 
-tools.normalizeL2(dist, 0)
 print dist[i,j]
 
 # PART 5. STEP 3. PERFORM RANKING SIMILAR TO WEEK 1 & 2 WITH QUERIES 'all_souls_000065.jpg', 'all_souls_0000XX.jpg', 'all_souls_0000XX.jpg'
