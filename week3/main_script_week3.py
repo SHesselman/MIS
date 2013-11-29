@@ -95,7 +95,8 @@ files = os.listdir('../../data/oxford_scaled/')
 word_patches = defaultdict(list)
 files_random = random.sample(files, 5)
 
-f = 'all_souls_000057.jpg'
+# Run separately for computing histograms in Part 4.
+f = 'radcliffe_camera_000390.jpg'
 impath = '../../data/oxford_scaled/' + f
 frames, sift = week3.compute_sift(impath, edge_thresh = 10, peak_thresh = 5);
 [indexes, dummy] = cluster.vq(sift ,codebook);
@@ -178,8 +179,6 @@ plt.plot([10,50,100,500,1100], [0.2,0.4,0.4,0.6,0.6], 'green') #Euclidean 5 - ra
 plt.plot([10,50,100,500,1100], [0.2,1.0,0.8,1.0,1.0], 'blue') #Euclidean 5 - church 190
 plt.axis([0, 1000, 0, 1.1])
 plt.show()
-
-
 
 # PART 5. STEP 4. COMPUTE THE PRECISION@5
 files, labels, label_names = week3.get_oxford_filedata()
