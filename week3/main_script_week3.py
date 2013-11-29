@@ -69,7 +69,7 @@ im_flat_random = np.array(random.sample(im_flat, N))
 
 K = 1000
 [codebook, dummy] = cluster.kmeans(im_flat_random, K) # RUN SCIPY KMEANS
-[indexes, dummy] = cluster.vq(im_flat, codebook) # VECTOR QUANTIZE PIXELS TO COLOR CENTERS
+[indexes, dummy] = cluster.vq(im_flat_random, codebook) # VECTOR QUANTIZE PIXELS TO COLOR CENTERS
 
 im_vq = codebook[indexes]
 im_vq = np.reshape(im_vq, (im.shape))
@@ -172,7 +172,7 @@ for i in np.arange(1, 1+3):
     ax.axis('off')
     ax.set_title(files[ranking[i-1]])
 
-# Represent images with histograms
+# Represent images with histograms by inserting precision values.
 plt.plot([10,50,100,500,1100], [0.8,1.0,1.0,1.0,1.0], 'red') #Euclidean 5 - souls0065
 plt.plot([10,50,100,500,1100], [0.2,0.4,0.4,0.6,0.6], 'green') #Euclidean 5 - radclife 390
 plt.plot([10,50,100,500,1100], [0.2,1.0,0.8,1.0,1.0], 'blue') #Euclidean 5 - church 190
