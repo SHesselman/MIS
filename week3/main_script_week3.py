@@ -133,7 +133,7 @@ for f in range(len(files)):
 # PART 5. STEP 2. COMPUTE DISTANCE MATRIX
 dist = []
 dist_type = 'intersect'
-dist = np.zeros(len(files)**2).reshape((len(files),len(files))) # TODO: Define zero point
+dist = np.zeros(len(files)**2).reshape((len(files),len(files)))
 for i in np.arange(0, len(files)):
     for j in np.arange(0, len(files)):
         if dist_type == 'euclidean':
