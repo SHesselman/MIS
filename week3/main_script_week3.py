@@ -158,7 +158,7 @@ elif dist_type == 'chi2' or dist_type == 'hellinger':
 print ranking
 
 # PART 5. STEP 4. COMPUTE THE PRECISION@5
-files, labels, label_names = week3.get_oxford_filedata()
+imfiles, labels, label_names = week3.get_oxford_filedata()
 # ...
 prec5 = week3.precision_at_N(0, labels, ranking, 5)
 print prec5
@@ -166,14 +166,14 @@ print prec5
 # PART 5. STEP 4. IMPLEMENT & COMPUTE AVERAGE PRECISION
 fig = plt.figure()
 ax = fig.add_subplot(2, 3, 1)
-im = imread('../../data/oxford_scaled/' + files[query_id])
+im = imread('../../data/oxford_scaled/' + imfiles[query_id])
 ax.imshow(im)
 ax.axis('off')
 ax.set_title('Query image')
 
 for i in np.arange(1, 1+3):
     ax = fig.add_subplot(2, 3, i+1)
-    im = imread('../../data/oxford_scaled/' + files[ranking[i-1]]) # The 0th image is the query itself
+    im = imread('../../data/oxford_scaled/' + imfiles[ranking[i-1]]) # The 0th image is the query itself
     ax.imshow(im)
     ax.axis('off')
     ax.set_title(files[ranking[i-1]])
