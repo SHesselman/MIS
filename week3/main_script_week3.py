@@ -97,11 +97,11 @@ files_random = random.sample(files, 5)
 
 f = 'all_souls_000057.jpg'
 impath = '../../data/oxford_scaled/' + f
-frames, sift = week3.compute_sift(impath, edge_thresh = 10, peak_thresh = 5)
-[indexes, dummy] = cluster.vq(sift ,codebook)
+frames, sift = week3.compute_sift(impath, edge_thresh = 10, peak_thresh = 5);
+[indexes, dummy] = cluster.vq(sift ,codebook);
 
 word_patches = week3.show_words_on_image(impath, K, frames, sift, indexes, colors, word_patches)
-    
+
 # PART 3. STEP 2. PLOT COLORBAR
 week3.get_colorbar(colors)
 
@@ -164,3 +164,16 @@ prec5 = week3.precision_at_N(0, labels, ranking, 5)
 print prec5
 
 # PART 5. STEP 4. IMPLEMENT & COMPUTE AVERAGE PRECISION
+fig = plt.figure()
+ax = fig.add_subplot(2, 3, 1)
+im = imread('../../data/oxford_scaled/' + files[query_id])
+ax.imshow(im)
+ax.axis('off')
+ax.set_title('Query image')
+
+for i in np.arange(1, 1+3):
+    ax = fig.add_subplot(2, 3, i+1)
+    im = imread('../../data/oxford_scaled/' + files[ranking[i-1]]) # The 0th image is the query itself
+    ax.imshow(im)
+    ax.axis('off')
+    ax.set_title(files[ranking[i-1]])
