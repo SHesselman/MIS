@@ -183,4 +183,6 @@ plt.show()
 files, labels, label_names = week3.get_oxford_filedata()
 # ...
 prec5 = week3.precision_at_N(query_id, labels, ranking, 5)
+prec10 = week3.precision_at_N(query_id, labels, ranking, 10)
 print prec5
+print prec10
