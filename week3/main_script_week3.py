@@ -132,20 +132,20 @@ for f in range(len(files)):
 
 # PART 5. STEP 2. COMPUTE DISTANCE MATRIX
 dist = []
-dist_type = 'intersect'
+dist_type = 'euclidean'
 dist = np.zeros(len(files)**2).reshape((len(files),len(files)))
 for i in np.arange(0, len(files)):
     for j in np.arange(0, len(files)):
         if dist_type == 'euclidean':
-            dist[i,j] = sum((((bows[i][k] - bows[j][k])**2) for k in range(len(bows[i])))) # ERROR: Minus number.
+            dist[i][j] = sum(((bows[i][k] - bows[j][k])**2) for k in range(len(bows[i])))
         elif dist_type == 'intersect':
-            dist[i,j] = sum(np.minimum(bows[i][k],bows[j][k]**2) for k in range(len(bows[i])))
+            dist[i][j] = sum((np.minimum(bows[i][k], bows[j][k])) for k in range(len(bows[i])))
         elif dist_type == 'chi2':
-            dist[i,j] = sum((((bows[i][k] - bows[j][k]) **2) / (bows[i][k]+bows[j][k])) for k in range(len(bows[i])))
+            dist[i][j] = sum((((bows[i][k] - bows[j][k]) **2) / (bows[i][k]+bows[j][k])) for k in range(len(bows[i])))
         elif dist_type == 'hellinger':
-            dist[i,j] = sum((np.sqrt((bows[i][k]*bows[j][k]))) for k in range(len(bows[i])))
+            dist[i][j] = sum((np.sqrt((bows[i][k]*bows[j][k]))) for k in range(len(bows[i])))
 
-print dist[i,j]
+print dist[i][j]
 
 # PART 5. STEP 3. PERFORM RANKING SIMILAR TO WEEK 1 & 2 WITH QUERIES 'all_souls_000065.jpg', 'all_souls_0000XX.jpg', 'all_souls_0000XX.jpg'
 query_id = randint(0, len(files))
@@ -157,23 +157,23 @@ elif dist_type == 'chi2' or dist_type == 'hellinger':
     ranking = np.argsort(dist[query_id])[::-1]
 print ranking
 
-# PART 5. STEP 4. COMPUTE THE PRECISION@5
-imfiles, labels, label_names = week3.get_oxford_filedata()
-# ...
-prec5 = week3.precision_at_N(0, labels, ranking, 5)
-print prec5
-
 # PART 5. STEP 4. IMPLEMENT & COMPUTE AVERAGE PRECISION
 fig = plt.figure()
 ax = fig.add_subplot(2, 3, 1)
-im = imread('../../data/oxford_scaled/' + imfiles[query_id])
+im = imread(('../../data/oxford_scaled/' + files[ranking[i-1]]).replace(' ', '')[:-4])
 ax.imshow(im)
 ax.axis('off')
 ax.set_title('Query image')
 
 for i in np.arange(1, 1+3):
     ax = fig.add_subplot(2, 3, i+1)
-    im = imread('../../data/oxford_scaled/' + imfiles[ranking[i-1]]) # The 0th image is the query itself
+    im = imread(('../../data/oxford_scaled/' + files[ranking[i-1]]).replace(' ', '')[:-4]) # The 0th image is the query itself
     ax.imshow(im)
     ax.axis('off')
     ax.set_title(files[ranking[i-1]])
+
+# PART 5. STEP 4. COMPUTE THE PRECISION@5
+files, labels, label_names = week3.get_oxford_filedata()
+# ...
+prec5 = week3.precision_at_N(query_id, labels, ranking, 5)
+print prec5
