@@ -48,10 +48,6 @@ week3.plot_2d_data(x, None, closest, means)
 print closest
 
 # PART 1. STEP 3. UPDATE CENTERS
-# for i in np.arange(0, K):
-    # means[i, :] = (sum(closest[i]) / len(x[j]), sum(closest[i]) / len(x[j]))
-    # print means[i, :]
-
 for i in np.arange(0, K):
     means[i, :] = np.mean(x[closest == i, :],0)
 
