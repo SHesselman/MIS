@@ -128,7 +128,7 @@ files = os.listdir('../../data/bow/codebook_100/')
 bows = []
 for f in range(len(files)):
     bows.append(week3.load_bow('../../data/bow/codebook_100/' + files[f]))
-    tools.normalizeL2(bows[f]) # ERROR!
+    tools.normalizeL2(bows[f])
 
 # PART 5. STEP 2. COMPUTE DISTANCE MATRIX
 dist = []
