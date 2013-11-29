@@ -172,6 +172,13 @@ for i in np.arange(1, 1+3):
     ax.axis('off')
     ax.set_title(files[ranking[i-1]])
 
+# Represent images with histograms
+plt.plot([10,50,100,500,1100], [0.8,1.0,1.0,1.0,1.0], 'red') #Euclidean 5 - souls0065
+plt.plot([10,50,100,500,1100], [0.2,0.4,0.4,0.6,0.6], 'green') #Euclidean 5 - radclife 390
+plt.plot([10,50,100,500,1100], [0.2,1.0,0.8,1.0,1.0], 'blue') #Euclidean 5 - church 190
+plt.axis([0, 1000, 0, 1.1])
+plt.show()
+
 # PART 5. STEP 4. COMPUTE THE PRECISION@5
 files, labels, label_names = week3.get_oxford_filedata()
 # ...
