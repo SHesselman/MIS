@@ -100,7 +100,7 @@ impath = '../../data/oxford_scaled/' + f
 frames, sift = week3.compute_sift(impath, edge_thresh = 10, peak_thresh = 5)
 [indexes, dummy] = cluster.vq(sift ,codebook)
 
-word_patches = week3.show_words_on_image(impath, K, frames, sift, indexes, colors, word_patches) # ERROR: Only one color visualized
+word_patches = week3.show_words_on_image(impath, K, frames, sift, indexes, colors, word_patches)
     
 # PART 3. STEP 2. PLOT COLORBAR
 week3.get_colorbar(colors)
