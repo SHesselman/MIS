@@ -14,6 +14,7 @@ sys.path.insert(0, '../')
 import tools
 import math
 import pylab as pl
+import sklearn 
 from sklearn import svm, datasets
 
 import week56
@@ -51,9 +52,8 @@ for j in range(len(testset)):
         dist[j,k] = sum(np.minimum(b_j,b_k))
 
 K = 9
-query_id = int(84) # (366, goal), (150, bicycle), (84, beach ), (450, mountain)
+query_id = int(150) # (366, goal), (150, bicycle), (84, beach ), (450, mountain)
 qinx     = find(testset == query_id)
-#ranking = np.argsort(dist[qinx,:]) 
 ranking = np.argsort(dist[argmax(testset == query_id), :])
 ranking = ranking[::-1]
 nearest_labels = labels[trainset[ranking[0 : K]]]
@@ -74,28 +74,43 @@ for cnt in range(K):
 # Q2: USE DIFFERENT STRATEGY
 
 # Q3: For K = 9, COMPUTE THE CLASS ACCURACY FOR THE TESTSET
-
-dist = np.zeros([len(testset), len(trainset)])
+#predict labels for each image in the testset
+K = 9 # Question 4: Change these values here.
+pred = np.zeros(len(testset))
 for i in range(len(testset)):
-    for j in range(len(trainset)):
-      dist[i.j] = ...
-
+    print "%3d" %(i)
+    ranking = np.argsort(dist[i, :])
+    ranking = ranking[::-1]
+    i_nearest_labels = labels[trainset[ranking[0 : K]]]
+    print "\t",; print i_nearest_labels
+    i_label_count = np.bincount(i_nearest_labels)
+    print "\t",; print i_label_count
+    pred[i] = argmax(i_label_count)
+    
+labelstest = labels[testset]
 classAcc = np.zeros(len(unique_labels))
-for c in range(len(unique_labels)):
-  tp = ...
-  fn = ...
-  classAcc[c] = tp / (tp + fn + 0.0)
+allClass = np.zeros(len(unique_labels))
+for c in range(len(testset)):
+    # Find the true positives, that is the number of images for which pred == labelstest and labelstest == c
+    if pred[c] == labelstest[c]:
+        classAcc[labelstest[c] - 1] += 1
+    allClass[labelstest[c] - 1] += 1
+
+for c in range(len(unique_labels)):        
+    classAcc[c] = classAcc[c] / (allClass[c] + 10e-10)
+print classAcc
+
+# Compute total average accuracy
+sum(classAcc) / K
 
 # REPORT THE CLASS ACC *PER CLASS* and the MEAN
 # THE MEAN SHOULD BE (CLOSE TO): 0.31
-
-
 
 # Q4: DO CROSS VALIDATION TO DEFINE PARAMETER K 
 K = [1, 3, 5, 7, 9, 15]
 
 # - SPLIT TRAINING SET INTO THREE PARTS.
-# - RANDOMLY SELECT TWO PARTS TO TRAIN AND 1 PART TO VALIDATE
+# - RANDOMLY SELECT TWO PARTS TO TRAIN AND 1 PART TO VALIDATE # random.sample(trainset, validation)
 # - MEASURE THE MEAN CLASSIFICATION ACCURACY FOR ALL IMAGES IN THE VALIDATION PART
 # - REPEAT FOR ALL POSSIBLE COMBINATIONS OF TWO PARTS
 # - PICK THE BEST K AS THE VALUE OF K THAT WORKS BEST ON AVERAGE FOR ALL POSSIBLE
