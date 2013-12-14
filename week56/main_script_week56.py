@@ -171,6 +171,9 @@ for ky in range(len(K)):
         # Calculate The mean accuracy
         Kscore[ky, kx] = np.mean(classAcc)
 
+        # Print label for each accuracy from left to right
+        print "Airplane, Beach, Bicycle, Boat, Car, Flower, Goal, Mountain, Temple, Train", "\n", classAcc
+
 # Set a maximum amount of results. The default is 6.
 kmeanScore = np.zeros([6,1])
 for y in range(Kscore.shape[0]):
@@ -383,7 +386,7 @@ print "The Accuracy for green and red labels:", accuracy
 files, labels, label_names, unique_labels, trainset, testset = week56.get_objects_filedata()
 
 # Codebook size. Changes these to 10, 100, 500, 1000, or 4000
-J = 500
+J = 4000
 
 # Load the Bag-Of-Words
 bow = np.zeros([len(files), J])
@@ -444,6 +447,9 @@ for cy in range(len(C)):
         # Calculate the mean accuracy
         Cscore[cy, cx] = np.mean(classAcc)
 
+        # Print label for each accuracy from left to right
+        print "Airplane, Beach, Bicycle, Boat, Car, Flower, Goal, Mountain, Temple, Train", "\n", classAcc
+
 # Set a maximum amount of results. The default is 5.
 cmeanScore = np.zeros([5,1])
 for y in range(Cscore.shape[0]):
@@ -456,16 +462,126 @@ print "Accuracies per class:",  '\n', Cscore
 print "Mean accuracy:", '\n', cmeanScore
 print "The most optimal C:", '\n', C[np.argmax(cmeanScore)]
 
-# Q12: Visualize the best performing SVM, what are good classes, bad classes, examples of images etc
+###############################################################################
+# Q12: Visualize the best performing SVM, what are good classes, bad classes, examples of images etc 
+###############################################################################
 
-# Using the (already) calculated values from Q11
-figure()
-plt.scatter(bow[labels==1, 0], bow[labels==1, 1], facecolor='r')
-plt.scatter(bow[labels==-1, 0], bow[labels==-1, 1], facecolor='g')
-plt.scatter(bow[labels==1, 0], bow[labels==1, 1], facecolor='b')
-plt.plot(bow[pred==1, 0], bow[pred==1, 1], marker='o', markersize=10, markeredgecolor='r', markerfacecolor='none', linestyle='none', markeredgewidth=2.0)
-plt.plot(bow[pred==-1, 0], bow[pred==-1, 1], marker='+', markersize=10, markeredgecolor='g', markerfacecolor='none', linestyle='none', markeredgewidth=2.0)
-plt.plot(bow[pred==1, 0], bow[pred==1, 1], marker='x', markersize=10, markeredgecolor='b', markerfacecolor='none', linestyle='none', markeredgewidth=2.0)
+# This is the same code as in the previous questions
+files, labels, label_names, unique_labels, trainset, testset = week56.get_objects_filedata()
 
+# Codebook size. Changes these to 10, 100, 500, 1000, or 4000
+J = 500
+bow = np.zeros([len(files), J])
+cnt = -1
+for impath in files:
+    cnt = cnt + 1
+    #print str(cnt) + '/' + str(len(files)) + '): ' + impath
+    filpat, filnam, filext = tools.fileparts(impath)
+    filpat2, filnam2, filext2 = tools.fileparts(filpat)
+    bow[cnt, :]  = week56.load_bow('../../data/bow_objects/codebook_' + str(J) + '/' + filnam2 + '/' + filnam + '.pkl')
+    bow[cnt] = tools.normalizeL1(bow[cnt], 0)
+
+C = [100000.0]
+crossTrainset = trainset.copy()
+random.shuffle(crossTrainset)
+
+cross = [crossTrainset[0:166], crossTrainset[166:333], crossTrainset[333:500]]
+perfC = np.zeros([len(C), 3])
+possibleCombinations = [[0,1,2],[0,2,1],[1,2,0]]
+Cscore = np.zeros([len(C),3])
+
+for cy in range(len(C)):
+    c = C[cy]
+
+    for cx in range(len(possibleCombinations)):
+        randomList = possibleCombinations[cx]
+        trainpart = np.concatenate([cross[randomList[0]],cross[randomList[1]]])
+        validationpart = cross[randomList[2]]
+            
+        svc = svm.SVC(kernel = 'linear', C=c)
+        svc.fit(bow[trainpart, :] , labels[trainpart])
+        pred = svc.predict(bow[validationpart, :])
+
+        classSvm = np.zeros(len(unique_labels))
+        for c in range(len(unique_labels)):
+            subset = pred[labels[validationpart] == c+1]
+            tp = sum(subset == c+1)
+            fn = sum(subset != c+1)
+            classSvm[c] = tp / (tp + fn + 0.0)
+
+print "SVM Accuracy per class:", "\n", "Airplane, Beach, Bicycle, Boat, Car, Flower, Goal, Mountain, Temple, Train", "\n", classSvm
+print 'SVM Mean accuracy:', "\n", np.mean(classSvm)
+
+###############################################################################
 # Q13: Compare SVM with k-NN
+###############################################################################
 
+# This is the same code used in the previous questions
+files, labels, label_names, unique_labels, trainset, testset = week56.get_objects_filedata()
+
+# Codebook size. Changes these to 10, 100, 500, 1000, or 4000
+J = 1000
+bow = np.zeros([len(files), J])
+cnt = -1
+for impath in files:
+    cnt = cnt + 1
+    #print str(cnt) + '/' + str(len(files)) + '): ' + impath
+    filpat, filnam, filext = tools.fileparts(impath)
+    filpat2, filnam2, filext2 = tools.fileparts(filpat)
+    bow[cnt, :] = week56.load_bow('../../data/bow_objects/codebook_' + str(J) + '/' + filnam2 + '/' + filnam + '.pkl')
+    bow[cnt] = tools.normalizeL1(bow[cnt], 0)
+
+# Change K value here
+K = [100000.0]
+crossTrainset = trainset.copy()
+random.shuffle(crossTrainset)
+
+cross = [crossTrainset[0:166], crossTrainset[166:333], crossTrainset[333:500]]
+perfK = np.zeros([len(K), 3])
+possibleCombinations = [[0,1,2],[0,2,1],[1,2,0]]
+Kscore = np.zeros([len(K),3])
+
+for ky in range(len(K)):
+    k = K[ky]
+
+    for kx in range(len(possibleCombinations)):
+        randomList = possibleCombinations[kx]
+        trainpart = np.concatenate([cross[randomList[0]],cross[randomList[1]]])
+        validationpart = cross[randomList[2]]
+
+        dist_norm = np.zeros([len(validationpart), len(trainpart)])
+        for y in range(len(validationpart)):
+            for x in range(len(trainpart)):
+                dist_norm[y,x] = sum(np.minimum(bow[validationpart[y]],bow[trainpart[x]]))
+        
+        predicted_label = np.zeros(len(validationpart)).astype(int);
+        for y in range(len(validationpart)):
+            ranking = np.argsort(dist_norm[y,:])
+            ranking = ranking[::-1]
+            topK = labels[trainpart[ranking[0:9]]]
+            counts = np.bincount(topK)
+            predicted_label[y] = np.argmax(counts)
+            
+        svc = svm.SVC(kernel = 'linear', C=k)
+        svc.fit(bow[trainpart, :] , labels[trainpart])
+        pred = svc.predict(bow[validationpart, :])
+
+        classSvm = np.zeros(len(unique_labels))
+        for c in range(len(unique_labels)):
+            subset = pred[labels[validationpart] == c+1]
+            tp = sum(subset == c+1)
+            fn = sum(subset != c+1)
+            classSvm[c] = tp / (tp + fn + 0.0)
+            
+        classKnn = np.zeros(len(unique_labels))
+        for c in range(len(unique_labels)):
+            subset = predicted_label[labels[validationpart] == c+1]
+            tp = sum(subset == c+1)
+            fn = sum(subset != c+1)
+            classKnn[c] = tp / (tp + fn + 0.0)
+
+print "SVM Accuracy per class:", "\n", "Airplane, Beach, Bicycle, Boat, Car, Flower, Goal, Mountain, Temple, Train", "\n", classSvm
+print 'SVM Mean accuracy:', "\n", np.mean(classSvm), "\n"
+
+print "k-NN Accuracy per class:", "\n", "Airplane, Beach, Bicycle, Boat, Car, Flower, Goal, Mountain, Temple, Train", "\n", classKnn
+print 'k-NN Mean accuracy:', "\n", np.mean(classKnn)
